@@ -1,7 +1,7 @@
 <template>
     <div class="task">
         <div class="loading" v-if="loading">
-            Loading...
+            加载中...
         </div>
 
         <div v-if="error" class="error">
@@ -10,7 +10,6 @@
 
         <div v-if="task" class="content">
             <h2>{{ task.title }}</h2>
-            <p>{{ task.body }}</p>
         </div>
     </div>
 </template>
@@ -40,11 +39,12 @@
                 // replace gettask with your data fetching util / API wrapper
                 var url = 'http://zhihu.carsonlius_liu.cn/api/tasks/';
                 var id = this.$route.params.id;
-                console.log(url+id);
                 this.$http.get(url+id).then(function (response) {
                     this.loading = false;
-                    
-                    console.log(response);
+                    if (response.status === 200){
+                        this.task = response.body;
+                    }
+
                 });
 
 

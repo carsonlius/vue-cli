@@ -27,7 +27,7 @@ import TaskCreate from './components/TaskCreate'
 // 路由规则
 const routes = [
     { path: '/', component: TaskList},
-    { path: '/task/:id', component: TaskCreate }
+    { path: '/task/:id', component: TaskCreate, name:'task_show' }
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置

@@ -1,15 +1,17 @@
 <template>
     <div>
         <ul class="list-group" v-if="todos.length">
-            <li :class="{computed:todo.computed}" class="list-group-item" v-for="(todo,index) in todos">{{ todo.title }}
-                <button class="btn btn-xs pull-right" :class="[todo.computed ? 'btn-danger' : 'btn-primary']"
-                        style="margin-left: 10px"
-                        @click="toggleComputed(todo)">{{ todo.computed ? 'undo' : 'computed'}}
-                </button>
-                <button class="btn btn-warning btn-xs pull-right" style="margin-left: 10px"
-                        @click="delTodo(index)">Delete
-                </button>
-            </li>
+
+                <li :class="{computed:todo.computed}" class="list-group-item" v-for="(todo,index) in todos">
+                    <router-link :to="{ name: 'task_show', params: { id: todo.id }}">{{ todo.title }}</router-link>
+                    <button class="btn btn-xs pull-right" :class="[todo.computed ? 'btn-danger' : 'btn-primary']"
+                            style="margin-left: 10px"
+                            @click="toggleComputed(todo)">{{ todo.computed ? 'undo' : 'computed'}}
+                    </button>
+                    <button class="btn btn-warning btn-xs pull-right" style="margin-left: 10px"
+                            @click="delTodo(index)">Delete
+                    </button>
+                </li>
         </ul>
         <TaskForm :todos="todos"/>
     </div>
