@@ -1,23 +1,28 @@
 <template>
-    <ul class="list-group" v-if="todos.length">
-        <li :class="{computed:todo.computed}" class="list-group-item" v-for="(todo,index) in todos">{{ todo.title }}
-            <button class="btn btn-xs pull-right" :class="[todo.computed ? 'btn-danger' : 'btn-primary']"
-                    style="margin-left: 10px"
-                    @click="toggleComputed(todo)">{{ todo.computed ? 'undo' : 'computed'}}
-            </button>
-            <button class="btn btn-warning btn-xs pull-right" style="margin-left: 10px"
-                    @click="delTodo(index)">Delete
-            </button>
-        </li>
-    </ul>
+    <div>
+        <ul class="list-group" v-if="todos.length">
+            <li :class="{computed:todo.computed}" class="list-group-item" v-for="(todo,index) in todos">{{ todo.title }}
+                <button class="btn btn-xs pull-right" :class="[todo.computed ? 'btn-danger' : 'btn-primary']"
+                        style="margin-left: 10px"
+                        @click="toggleComputed(todo)">{{ todo.computed ? 'undo' : 'computed'}}
+                </button>
+                <button class="btn btn-warning btn-xs pull-right" style="margin-left: 10px"
+                        @click="delTodo(index)">Delete
+                </button>
+            </li>
+        </ul>
+        <TaskForm :todos="todos"/>
+    </div>
 </template>
 
 <script>
+    import TaskForm from './TaskForm'
+
     export default {
         name: "task-list",
+        components: {TaskForm},
         data: function () {
-            return {
-            };
+            return {};
         },
         props: ['todos'],
         methods: {

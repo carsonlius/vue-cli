@@ -1,24 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <!--<HelloWorld/>-->
-    <!--<TaskList :todos="todos"/>-->
-    <!--<TaskForm :todos="todos"/>-->
       <router-view :todos="todos"></router-view>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld'
-import TaskList from './components/TaskList'
-import TaskForm from './components/TaskForm'
 
 export default {
   name: 'App',
   components: {
     HelloWorld,
-      TaskList,
-      TaskForm
   },
     data: function() {
       return {
