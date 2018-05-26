@@ -11,23 +11,27 @@ import App from './App'
 import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min'
+import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
+import VuePaginate from 'vue-paginate'
+
+// 引入分页
+Vue.use(VuePaginate)
 
 // 引入vue-resource
-import VueResource from 'vue-resource'
 Vue.use(VueResource)
 
 // 引入vue router
-import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
 import TaskList from './components/TaskList'
-import TaskCreate from './components/TaskCreate'
+import TaskDetail from './components/TaskDetail'
 
 // 路由规则
 const routes = [
     { path: '/', component: TaskList},
-    { path: '/task/:id', component: TaskCreate, name:'task_show' }
+    { path: '/task/:id', component: TaskDetail, name:'task_show' }
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置

@@ -46,16 +46,6 @@
                     }
 
                 });
-
-
-                this.$http.get(url+id, (err, task) => {
-                    this.loading = false
-                    if (err) {
-                        this.error = err.toString()
-                    } else {
-                        this.task = task
-                    }
-                })
             }
         }
     }

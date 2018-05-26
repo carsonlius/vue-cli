@@ -27,8 +27,8 @@ export default {
       this.$http.get(url).then(function (response) {
           if (response.status === 200) {
               this.todos = response.body;
+              console.log(this.todos);
           }
-          console.log(response);
       });
     },
     computed: {

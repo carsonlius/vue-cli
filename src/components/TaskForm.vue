@@ -4,7 +4,7 @@
             <input type="text" class="form-control" placeholder="Add a new Todo" v-model="newTodo.title">
         </div>
         <div class="form-group">
-            <button class="btn btn-success form-control" type="submit">Add Todo</button>
+            <button class="btn btn-success form-control" type="submit">Add Task</button>
         </div>
     </form>
 </template>
@@ -15,13 +15,26 @@
         props : ['todos'],
         data : function () {
             return {
-                newTodo: {id: null, title: '', computed: false}
+                newTodo: {id: '', title: '', computed: false}
             }
         },
         methods: {
             addTodo: function () {
-                this.todos.unshift(this.newTodo);
-                this.newTodo = {id: null, title: '', computed: false};
+                var url = 'http://zhihu.carsonlius_liu.cn/api/tasks/';
+                var params = {
+                    name : this.newTodo.title
+                };
+                var vm = this;
+                this.$http.post(url, params, {responseType : 'json'}).then(function(response){
+                    if (response.body.status === 'success') {
+                        vm.newTodo.id = response.body.task.id;
+                        vm.todos.unshift(vm.newTodo);
+                        vm.newTodo = {id: null, title: '', computed: false};
+                    }
+                }, function (response) {
+                    console.log(response);
+
+                });
             }
         }
     }
