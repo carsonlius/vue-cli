@@ -42,10 +42,7 @@
                     prev: 'P'
                 },
                 classes : {
-                    'ul': 'list-inline',
-                    'li.active a' : 'page_active',
-                    // '.next > a': 'next-link',
-                    // '.prev > a': ['prev-link', 'another-class'] // multiple classes
+                    'ul': ['list-inline', 'pagination'],
                 }
 
             };
@@ -94,19 +91,5 @@
     .computed {
         color: red;
         text-decoration: line-through;
-    }
-    .page_active {
-        font-weight: bold;
-        color : red;
-        background: green;
-    }
-    .paginate-links li.active a{
-        font-weight: bold;
-    }
-    ul.paginate-links > li.active > a {
-        font-weight:bold
-    }
-    a {
-        font-weight:bold
     }
 </style>
