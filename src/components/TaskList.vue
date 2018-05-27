@@ -14,7 +14,7 @@
                     </button>
                 </li>
             </paginate>
-            <paginate-links for="task_list" :sync="true" :limit="limit" :classes="classes"></paginate-links>
+            <paginate-links for="task_list" :sync="true" :limit="limit" :show-step-links="true" :classes="classes"></paginate-links>
 
 
         </ul>
@@ -36,13 +36,14 @@
                     next: '下一页'
                 },
                 per: 2,
-                limit: 5,
+                limit: 3,
                 step_links: {
                     next: 'N',
                     prev: 'P'
                 },
                 classes : {
                     'ul': 'list-inline',
+                    'li.active a' : 'page_active',
                     // '.next > a': 'next-link',
                     // '.prev > a': ['prev-link', 'another-class'] // multiple classes
                 }
@@ -91,10 +92,21 @@
 
 <style scoped>
     .computed {
-        color: green;
+        color: red;
         text-decoration: line-through;
     }
-
-
-
+    .page_active {
+        font-weight: bold;
+        color : red;
+        background: green;
+    }
+    .paginate-links li.active a{
+        font-weight: bold;
+    }
+    ul.paginate-links > li.active > a {
+        font-weight:bold
+    }
+    a {
+        font-weight:bold
+    }
 </style>
