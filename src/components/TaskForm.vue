@@ -12,7 +12,11 @@
 <script>
     export default {
         name: "task-form",
-        props : ['todos'],
+        computed : {
+          todos : function () {
+              return this.$store.state.todos;
+          }
+        },
         data : function () {
             return {
                 newTodo: {id: '', title: '', computed: false}

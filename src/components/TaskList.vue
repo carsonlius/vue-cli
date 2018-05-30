@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="list-group" v-if="todos.length">
+        <ul class="list-group" v-if="todos">
             <paginate name="task_list" :list="todos" :per="per" @chnage="OnTaskChange" :hide-single-page="true">
                 <li :class="{computed:todo.computed}" class="list-group-item"
                     v-for="(todo,index) in paginated('task_list')">
@@ -15,10 +15,10 @@
                 </li>
             </paginate>
             <paginate-links for="task_list" :sync="true" :limit="limit" :show-step-links="true" :classes="classes"></paginate-links>
-
-
         </ul>
-        <TaskForm :todos="todos"/>
+        <div class="left_align">
+            <TaskForm/>
+        </div>
     </div>
 </template>
 
@@ -35,59 +35,42 @@
                     prev: '上一页',
                     next: '下一页'
                 },
-                per: 2,
+                per: 10,
                 limit: 3,
                 step_links: {
                     next: 'N',
                     prev: 'P'
                 },
                 classes : {
-                    'ul': ['list-inline', 'pagination'],
+                    'ul': ['pagination'],
                 }
 
             };
         },
-        props: ['todos'],
+        // props: ['todos'],
+        computed : {
+           todos : function () {
+               return this.$store.state.todos;
+           }
+        },
         methods: {
             OnTaskChange: function (toPage, fromPage) {
-                console.log('发生了变化');
-                console.log(toPage);
-                console.log(fromPage);
             },
-            delTodo: function (todo, index) {
-
-                var url = 'http://zhihu.carsonlius_liu.cn/api/tasks/' + todo.id;
-                var vm = this;
-                this.$http.delete(url).then(function (response) {
-                    console.log(response.body);
-                    if (response.body.status === 'success') {
-                        vm.todos.splice(index, 1);
-                    }
-                });
+            delTodo: function (task, index) {
+                this.$store.dispatch('delTask', {task, index});
 
             },
             toggleComputed: function (todo) {
-                var url = 'http://zhihu.carsonlius_liu.cn/api/tasks/' + todo.id;
-                var params = {
-                    computed: todo.computed ? 0 : 1
-                };
-                console.log(todo);
-                console.log(params);
-                this.$http.patch(url, params).then(function (response) {
-                    console.log(response);
-                    if (response.body.success === true) {
-                        todo.computed = !todo.computed;
-                    }
-
-                }, function (response) {
-                    console.log(response);
-                });
+                this.$store.dispatch('toggleComputed', todo);
             }
         },
     }
 </script>
 
 <style scoped>
+    .left_align {
+        margin-left: 30px;
+    }
     .computed {
         color: red;
         text-decoration: line-through;

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-      <router-view :todos="todos"></router-view>
+      <router-view></router-view>
   </div>
 </template>
 
@@ -13,27 +13,14 @@ export default {
   components: {
     HelloWorld,
   },
-    data: function() {
-      return {
-          message: 'Hello World',
-          todos: [
-          ]
-      }
-    },
 
     // vue 准备好的时候
     mounted : function () {
-      var url = 'http://zhihu.carsonlius_liu.cn/api/tasks';
-      this.$http.get(url).then(function (response) {
-          if (response.status === 200) {
-              this.todos = response.body;
-              console.log(this.todos);
-          }
-      });
+      this.$store.dispatch('setTaskList');
     },
     computed: {
         todoCount: function () {
-            return this.todos.length;
+            return 1;
         }
     }
 }
