@@ -30,9 +30,9 @@ import PaginationTask from './components/PaginationTask'
 
 // 路由规则
 const routes = [
-    { path: '/', component: TaskList},
-    { path: '/task/:id', component: TaskDetail, name:'task_show' },
-    {path : '/task_page_list', component : PaginationTask, name : 'task_page'}
+    {path: '/', component: TaskList},
+    {path: '/task/:id', component: TaskDetail, name: 'task_show'},
+    {path: '/task_page_list', component: PaginationTask, name: 'task_page'}
 ]
 
 // 3. 创建 router 实例，然后传 `routes` 配置
@@ -45,22 +45,33 @@ const router = new VueRouter({
 const Http = new Vue
 const store = new Vuex.Store({
     state: {
-        count : 0,
-        todos: []
+        count: 0,
+        todos: [],
+        newTodo: {id: '', title: '', computed: false}
     },
     mutations: {
-        increment (state) {
+        increment(state) {
             state.count++
         },
-        setTask : function (state, task_list) {
+        setTask: function (state, task_list) {
             state.todos = task_list;
         },
-        delSpecialTask : function (state, index) {
+        delSpecialTask: function (state, index) {
             state.todos.splice(index, 1);
+        },
+        toggleComputed: function (state, todo) {
+            todo.computed = !todo.computed;
+        },
+        addTask: function (state, newTodo) {
+            state.todos.unshift(newTodo);
+            console.log(state.newTodo);
+        },
+        resetTask : function (state) {
+            state.newTodo = {id: '', title: '', computed: false}
         }
     },
-    actions : {
-        setTaskList : function (store) {
+    actions: {
+        setTaskList: function (store) {
             let url = 'http://zhihu.carsonlius_liu.cn/api/tasks';
             Http.$http.get(url).then(function (response) {
                 if (response.status === 200) {
@@ -68,7 +79,7 @@ const store = new Vuex.Store({
                 }
             });
         },
-        delTask : function (store, {index, task}) {
+        delTask: function (store, {index, task}) {
             let url = 'http://zhihu.carsonlius_liu.cn/api/tasks/' + task.id;
             Http.$http.delete(url).then(function (response) {
                 if (response.body.status === 'success') {
@@ -76,18 +87,35 @@ const store = new Vuex.Store({
                 }
             });
         },
-        toggleComputed : function (store, todo) {
+        toggleComputed: function (store, todo) {
             let url = 'http://zhihu.carsonlius_liu.cn/api/tasks/' + todo.id;
             let params = {
                 computed: todo.computed ? 0 : 1
             };
             Http.$http.patch(url, params).then(function (response) {
                 if (response.body.success === true) {
-                    todo.computed = !todo.computed;
+                    store.commit('toggleComputed', todo);
                 }
             }, function (response) {
                 console.log(response);
             });
+        },
+        addTask: function (store, newTodo) {
+            let url = 'http://zhihu.carsonlius_liu.cn/api/tasks/';
+            let params = {name: newTodo.title};
+            Http.$http.post(url, params, {responseType: 'json'}).then(function (response) {
+                if (response.body.status === 'success') {
+                    newTodo.id = response.body.task.id;
+                    store.commit('addTask', newTodo);
+                    store.commit('resetTask');
+                }
+            }, function (response) {
+                console.log(response);
+
+            });
+        },
+        resetTask: function (store) {
+            store.commit('resetTask');
         }
     }
 })
@@ -97,9 +125,9 @@ Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+    el: '#app',
     router,
     store,
-    components: { App },
-  template: '<App/>',
+    components: {App},
+    template: '<App/>',
 })
